@@ -16,9 +16,15 @@ export class CUserController {
     try {
       const newUser = await this.createUserCase.execute(userData);
 
+      //Usamos una destructuración para no enviar el usuario con la contraseña
+      const { password, ...newWithoutPassword } = newUser;
+
       return res
         .status(201)
-        .json({ message: "usuario creado con exito", user: newUser });
+        .json({
+          message: "usuario creado con exito",
+          user: newWithoutPassword,
+        });
     } catch (error: any) {
       return res.status(400).json({ error: error.message });
     }
