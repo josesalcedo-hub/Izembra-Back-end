@@ -15,7 +15,7 @@ export class CUserController {
 
     try {
       const newUser = await this.createUserCase.execute(userData);
-
+      
       //Usamos una destructuración para no enviar el usuario con la contraseña
       const { password, ...newWithoutPassword } = newUser;
 

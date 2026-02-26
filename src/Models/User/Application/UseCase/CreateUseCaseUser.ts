@@ -10,7 +10,9 @@ export class CreateUseCaseuser {
   }
 
   async execute(userData: User): Promise<User> {
+    
     const hashedPasswaord = await bcrypt.hash(userData.password, 10);
+
     const newUser = await this.userRepository.create({
       ...userData,
       password: hashedPasswaord,
