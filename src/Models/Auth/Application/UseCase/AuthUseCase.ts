@@ -6,8 +6,8 @@ export class AuthUseCase{
 
     generateToken(user:User):string{
         return this.tokenServices.generate({
-            id: user.id,
-            email:user.email
+            id: user.getId(),
+            email:user.getEmail()
         })
     }
 }

@@ -1,4 +1,4 @@
-import { CreateUserDTO } from "../../Domain/Entities/CreateUserDTO";
+import { CreateUserDTO } from "../dtos/CreateUserDTO";
 import { User } from "../../Domain/Entities/User";
 import { IUserRepository } from "../../Domain/Repositories/IUserRepository";
 import bcrypt from "bcrypt";
@@ -14,11 +14,11 @@ export class CreateUseCaseuser {
     
     const hashedPasswaord = await bcrypt.hash(userData.password, 10);
 
-    const newUser = await this.userRepository.create({
+    const createdUser = await this.userRepository.create({
       ...userData,
       password: hashedPasswaord,
     });
 
-    return newUser;
+    return createdUser;
   }
 }

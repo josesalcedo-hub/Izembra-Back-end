@@ -1,7 +1,7 @@
 import { IUserRepository } from "../../Domain/Repositories/IUserRepository";
 import { User } from "../../Domain/Entities/User";
 import { prismaClient } from "../.././../../Infrastructure/repository/db";
-import { CreateUserDTO } from "../../Domain/Entities/CreateUserDTO";
+import { CreateUserDTO } from "../../Application/dtos/CreateUserDTO";
 
 export class UserRepository implements IUserRepository {
   async create(user: CreateUserDTO): Promise<User> {
@@ -24,7 +24,6 @@ export class UserRepository implements IUserRepository {
     if(!userFound){
       throw new Error("Usuario no encontrado")
     }
-    
     return new User(
       userFound.id,
       userFound.name,
