@@ -1,19 +1,13 @@
 export class User {
   constructor(
-    private readonly id: number,
-    private name: string,
-    private lastname: string,
-    private email: string,
-    private password: string,
-    private phone: string,
-    private createdAt: Date
+    public readonly id: number,
+    public name: string,
+    public lastname: string,
+    public email: string,
+    public password: string,
+    public phone: string,
+    public createdAt: Date
   ) {}
 
-  getEmail():string{
-    return this.email
-  }
 
-  getId():number{
-    return this.id
-  }
 }

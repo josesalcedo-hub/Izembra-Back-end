@@ -1,8 +1,8 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
-import { router as User } from "./Models/User/Infrastructure/routes/User.routes";
-import { router as Login } from "./Models/Auth/Infrastructure/routes/login.routes";
+import {router as User} from "./src/Models/User/Infrastructure/routes/User.routes" 
+import { router as Login } from "./src/Models/Auth/Infrastructure/routes/login.routes";
 
 
 dotenv.config()
