@@ -1,3 +1,4 @@
+import { CreateUserDTO } from "../../Domain/Entities/CreateUserDTO";
 import { User } from "../../Domain/Entities/User";
 import { IUserRepository } from "../../Domain/Repositories/IUserRepository";
 import bcrypt from "bcrypt";
@@ -9,7 +10,7 @@ export class CreateUseCaseuser {
     this.userRepository = userRepository;
   }
 
-  async execute(userData: User): Promise<User> {
+  async execute(userData: CreateUserDTO): Promise<User> {
     
     const hashedPasswaord = await bcrypt.hash(userData.password, 10);
 

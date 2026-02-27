@@ -1,4 +1,6 @@
+import { CreateUserDTO } from "../Entities/CreateUserDTO";
 import { User } from "../Entities/User";
 export interface IUserRepository {
-  create(user: User): Promise<User>;
+  create(user: CreateUserDTO): Promise<User>;
+  findByEmail(email: string): Promise<User>;
 }
