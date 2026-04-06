@@ -13,7 +13,33 @@ model User {
   name      String
   lastname  String
   email     String   @unique
-  password  String
   phone     String
   createdAt DateTime @default(now())
+  password  String
+}
+
+model project {
+  id           Int     @id
+  nombre       String
+  descripcion  String
+  constructora String
+  ubicacion    String?
+  unidades unidades[]  
+  
+}
+
+model unidades {
+  id                   Int
+  id_proyecto          Int
+  tipo_inmueble        String
+  precio_minimo        String
+  plazo_entrega        String
+  valor_separacion     String
+  porcentaje_fin       Int
+  valor_estimado_anual Int
+  estado               String
+  renta_corta          Boolean
+  
+  proyecto project @relation(fields: [id_proyecto], references: [id])
+  @@id([id, id_proyecto])
 }

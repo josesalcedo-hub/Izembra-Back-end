@@ -24,6 +24,7 @@ export class UserRepository implements IUserRepository {
     if(!userFound){
       throw new Error("Usuario no encontrado")
     }
+    
     return new User(
       userFound.id,
       userFound.name,

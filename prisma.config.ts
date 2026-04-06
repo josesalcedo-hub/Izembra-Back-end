@@ -9,7 +9,7 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["postgresql://postgres:admin123@localhost:5432/izembraDB?schema=public"] as string,
+    url: process.env["DATABASE_URL"] as string,
   },
 });
 
