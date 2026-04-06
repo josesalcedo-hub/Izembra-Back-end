@@ -2,7 +2,7 @@ import { Router } from "express";
 import { AuthController } from "../Controllers/Auth.controller";
 import { UserRepository } from "@/Models/User/Infrastructure/repository/UserRepository";
 import { JwtTokenServices } from "../Repository/jwt";
-import { LoginUseCase } from "../../Application/UseCase/LoginUseCase";
+import { LoginUseCase } from "../../Application/UseCaseLogin/LoginUseCase";
 import { AuthUseCase } from "../../Application/UseCase/AuthUseCase";
 export const router = Router();
 
