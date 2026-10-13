@@ -9,37 +9,44 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  lastname  String
-  email     String   @unique
-  phone     String
-  createdAt DateTime @default(now())
-  password  String
+  id           String   @id
+  name         String
+  lastname     String
+  email        String   @unique
+  phone        String
+  createdAt    DateTime
+  passwordHash String
 }
 
-model project {
-  id           Int     @id
+model Project {
+  id           String @id
   nombre       String
   descripcion  String
   constructora String
-  ubicacion    String?
-  unidades unidades[]  
-  
+  ubicacion    String
+
+  estado String
+
+  plazoEntrega           String
+  valorSeparacion        Decimal
+  porcentajeFinanciacion Decimal
+  rentabilidadAnual      Decimal?
+  rentaCorta             Boolean
+  tipoInmueble           String?
+  precioMinimo           Decimal?
+  media                  ProjectMedia[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model unidades {
-  id                   Int
-  id_proyecto          Int
-  tipo_inmueble        String
-  precio_minimo        String
-  plazo_entrega        String
-  valor_separacion     String
-  porcentaje_fin       Int
-  valor_estimado_anual Int
-  estado               String
-  renta_corta          Boolean
-  
-  proyecto project @relation(fields: [id_proyecto], references: [id])
-  @@id([id, id_proyecto])
+model ProjectMedia {
+  id        String @id
+  projectId String
+
+  url      String
+  type     String
+  position Int?
+
+  project Project @relation(fields: [projectId], references: [id])
 }

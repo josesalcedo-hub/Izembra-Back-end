@@ -1,6 +1,6 @@
 import { CreateUserDTO } from "../dtos/CreateUserDTO";
 import { User } from "../../Domain/Entities/User";
-import { IUserRepository } from "../../Domain/Repositories/IUserRepository";
+import { IUserRepository } from "../../Domain/Port/IUserRepository";
 import bcrypt from "bcrypt";
 export class CreateUseCaseuser {
   private userRepository: IUserRepository;
@@ -9,15 +9,23 @@ export class CreateUseCaseuser {
     this.userRepository = userRepository;
   }
 
-  async execute(userData: CreateUserDTO): Promise<User> {
+  async create(userData: CreateUserDTO): Promise<User> {
     const { password } = userData;
+    const passwordHash = await bcrypt.hash(password, 10);
 
-    const passHash = await bcrypt.hash(password, 10);
-    const createdUser = await this.userRepository.create({
-      ...userData,
-      password: passHash,
-    });
+    const createUserProps = {
+      name: userData.name,
+      lastname: userData.lastname,
+      email: userData.email,
+      passwordHash,
+      phone: userData.phone,
+    };
 
-    return createdUser;
+    const user = User.create(createUserProps);
+
+    const userCreated = await this.userRepository.create(user);
+
+    return userCreated
+
   }
 }

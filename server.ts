@@ -2,9 +2,9 @@ import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
 import {router as User} from "./src/Models/User/Infrastructure/routes/User.routes" 
-import { router as Login } from "./src/Models/Auth/Infrastructure/routes/login.routes";
-import {router as Data} from "./src/Models/Property/Infrastructure/Routes/property.routes"
-
+import { routerLogin } from "./src/Models/Auth/Infrastructure/routes/login.routes";
+import {routerProject} from "./src/Models/Project/Infrastructure/Routes/Project.routes"
+import { router as Payment} from "./src/Models/Payments/Infrastructure/routes/Payment.routes";
 dotenv.config()
 
 const app = express();
@@ -12,11 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(cors({
     //Especificamos el dominio del Frontend
-    origin: [
-        'http://localhost:3000', 
-        'https://cl4h1r14-3000.usw3.devtunnels.ms',
-        'https://allie-nonannihilable-juelz.ngrok-free.dev'
-    ],
+    origin: 'http://localhost:3000', 
     //Definimos el intercambio de cookie/headers de Auth
     credentials:true,
 
@@ -28,9 +24,10 @@ app.use(cors({
 
 //Rutas
 
-app.use("/api", Login)
-app.use("/api", User);
-app.use("/api", Data)
+app.use("/api", routerLogin);
+app.use("/api/users", User);
+app.use("/api", routerProject);
+app.use("/api", Payment)
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, ()=>{

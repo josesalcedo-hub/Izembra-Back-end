@@ -1,28 +1,35 @@
-import { Request, Response } from "express";
 import { LoginUseCase } from "../../Application/UseCaseLogin/LoginUseCase";
+import { schemaLogin } from "../../Application/schemas/LoginSchema";
+import { Request, Response } from "express";
 
 export class AuthController {
-  constructor(private loginUseCase: LoginUseCase) {}
+
+  constructor(private loginUseCase: LoginUseCase) {
+  }
 
   async login(req: Request, res: Response): Promise<Response> {
+    const data = req.body;
+    const result = schemaLogin.safeParse(data);
 
-    console.log(req.body);
-    
-    try {
-      const { token } = await this.loginUseCase.execute(req.body);
-
-      res.cookie("tokenAuthorized", token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 1800000 * 1,
-        path: "/",
+    if (!result.success) {
+      return res.status(401).json({
+        error: result.error.issues,
       });
+    }
 
-      return res.json({ message: "Login Exitoso"});
+    try {
+      const aut = await this.loginUseCase.execute(result.data);
+      return res.status(200).json({
+        message: "Usuario autenticado",
+        token: aut,
+      });
+    } catch (error: unknown) {
+      const message =
+        error instanceof Error ? error.message : "Error interno del servidor";
 
-    } catch (error: any) {
-      return res.status(404).json({ message: error.message });
+      return res.status(401).json({
+        error: message,
+      });
     }
   }
 }

@@ -1,27 +1,36 @@
-import { IUserRepository } from "@/Models/User/Domain/Repositories/IUserRepository";
-import { AuthUseCase } from "../UseCase/AuthUseCase";
-import { ITokenPayload } from "../../Domain/Repositories/ITokenPayload";
+import { IUserRepository } from "@/Models/User/Domain/Port/IUserRepository";
+import { ITokenService } from "../../Domain/Port/ITokenService";
+import { LoginDTO } from "../dtos/LoginDTO";
 import bcrypt from "bcrypt";
 
 export class LoginUseCase {
-  constructor(
-    private userRepository: IUserRepository,
-    private authUseCase: AuthUseCase,
-  ) {}
-  async execute(payload: ITokenPayload): Promise<{ token: string }> {
-    const { email, password } = payload;
+  private tokenService: ITokenService;
+  private userRepository: IUserRepository;
+  
+  constructor(tokenService: ITokenService, userRepository: IUserRepository) {
+    this.tokenService = tokenService;
+    this.userRepository = userRepository;
+  }
 
-    const user = await this.userRepository.findByEmail(email[0]);
-    if (!user) throw new Error("Email Invalido");
+  async execute(payload: LoginDTO): Promise<{ token: string }> {
+    const userFound = await this.userRepository.findByEmail(payload.email);
 
-    const isPasswordValid = await bcrypt.compare(password[0], user.password);
-
-    if (!isPasswordValid) {
-      throw new Error("Credential invalid");
+    if (userFound === null) {
+      throw new Error("Credenciales inválidas");
     }
 
-    const token = this.authUseCase.generateToken(user);
+    const isPasswordValid = await bcrypt.compare(
+      payload.password,
+      userFound.passwordHash,
+    );
 
+    if (!isPasswordValid) {
+      throw new Error("Credenciales inválidas");
+    }
+
+    const payloadToken = { id: userFound.id, email: userFound.email };
+
+    const token = this.tokenService.generate(payloadToken);
     return { token };
   }
 }

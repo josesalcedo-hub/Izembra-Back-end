@@ -1,0 +1,1 @@
+export type PaymentType = "SEPARATION" | "INITIAL_PAYMENT";
